@@ -57,7 +57,7 @@ const filters = [
     options: [
       { value: 'electric-charging-available', label: 'Electric Charging Available' },
       { value: '24-7-available', label: '24/7 available' },
-      { value: 'power-socket', label: 'Power Socker' },
+      { value: 'power-socket', label: 'Power Socket' },
     ],
   },
   {
@@ -118,7 +118,7 @@ export default function SpotList() {
       newParkingSpots = newParkingSpots.filter(parkingSpot => filterSettings.size.includes(parkingSpot.size))
     }
     if (filterSettings.amenities != null && filterSettings.amenities.length > 0) {
-      newParkingSpots = newParkingSpots.filter(parkingSpot => filterSettings.amenities.any(amenity => parkingSpot.amenities.includes(amenity)))
+      newParkingSpots = newParkingSpots.filter(parkingSpot => filterSettings.amenities.some(amenity => parkingSpot.amenities.includes(amenity)))
     }
     if (filterSettings.search != null && filterSettings.search.length > 0 && filterSettings.search[0].length > 0) {
       const searchTerm = filterSettings.search[0].toLowerCase()
