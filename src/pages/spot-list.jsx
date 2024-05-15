@@ -98,6 +98,7 @@ export default function SpotList() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filterSettings, setFilterSettings] = useState({});
+  const [searchParams, setSearchParams] = useState("")
   const [filteredParkingSpots, setFilteredParkingSpots] = useState(parkingSpots)
   function applyFilter(sectionId, option) {
     const newFilterSettings = { ...filterSettings };
@@ -115,6 +116,13 @@ export default function SpotList() {
     }
     if (filterSettings.size != null && filterSettings.size.length > 0) {
       newParkingSpots = newParkingSpots.filter(parkingSpot => filterSettings.size.includes(parkingSpot.size))
+    }
+    if (filterSettings.amenities != null && filterSettings.amenities.length > 0) {
+      newParkingSpots = newParkingSpots.filter(parkingSpot => filterSettings.amenities.any(amenity => parkingSpot.amenities.includes(amenity)))
+    }
+    if (filterSettings.search != null && filterSettings.search.length > 0 && filterSettings.search[0].length > 0) {
+      const searchTerm = filterSettings.search[0].toLowerCase()
+      console.log("Filter", searchTerm)
     }
     setFilteredParkingSpots(newParkingSpots)
     
@@ -418,7 +426,7 @@ export default function SpotList() {
                       </button>
 
                       {/* Search */}
-                      <a href='#' className='ml-2 p-2 text-gray-400 hover:text-gray-500'>
+                      <a href='/spots' className='ml-2 p-2 text-gray-400 hover:text-gray-500'>
                         <span className='sr-only'>Search</span>
                         <MagnifyingGlassIcon className='h-6 w-6' aria-hidden='true' />
                       </a>
@@ -434,7 +442,7 @@ export default function SpotList() {
                       <div className='flex items-center lg:ml-8'>
                         <div className='flex space-x-8'>
                           <div className='hidden lg:flex'>
-                            <a href='#' className='-m-2 p-2 text-gray-400 hover:text-gray-500'>
+                            <a href='/spots' className='-m-2 p-2 text-gray-400 hover:text-gray-500'>
                               <span className='sr-only'>Search</span>
                               <MagnifyingGlassIcon className='h-6 w-6' aria-hidden='true' />
                             </a>
@@ -569,21 +577,23 @@ export default function SpotList() {
                     <MagnifyingGlassIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
                   </div>
                   <input
-                    type='email'
-                    name='email'
-                    id='email'
+                    type='string'
+                    name='searchParams'
+                    id='searchParams'
                     className='block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     placeholder='Location'
+                    value={searchParams}
+                    onChange={(e) => setSearchParams(e.target.value)}
                   />
                 </div>
               </div>
               <div className='grid-cols-4 ml-4'>
-                <a
-                  href='/spots'
+                <button
+                  onClick={() => applyFilter('search', searchParams)}
                   className='inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-1.5 font-medium text-white hover:bg-indigo-700'
                 >
                   Search
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -663,7 +673,7 @@ export default function SpotList() {
                           {product.name}
                         </a>
                       </h3>
-                      <p className='text-sm text-gray-500'>{product.description}</p>
+                      <p className='text-sm text-gray-500'>{product.address}</p>
                       <div className='flex flex-1 flex-col justify-end'>
                         <p className='text-base font-medium text-gray-900'>{product.price}</p>
                       </div>

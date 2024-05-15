@@ -35,7 +35,7 @@ const navigation = {
 
 const policies = [
   {
-    name: 'Free delivery all year long',
+    name: 'Free service all year long',
     description:
       'Name another place that offers year long free delivery? We’ll be waiting. Order now and you’ll get delivery absolutely free.',
     imageSrc: 'https://tailwindui.com/img/ecommerce/icons/icon-delivery-light.svg',
@@ -47,7 +47,7 @@ const policies = [
     imageSrc: 'https://tailwindui.com/img/ecommerce/icons/icon-chat-light.svg',
   },
   {
-    name: 'Fast Shopping Cart',
+    name: 'Fast Booking',
     description:
       "Look at the cart in that icon, there's never been a faster cart. What does this mean for the actual checkout experience? I don't know.",
     imageSrc: 'https://tailwindui.com/img/ecommerce/icons/icon-fast-checkout-light.svg',
@@ -475,12 +475,10 @@ export default function SpotDetail() {
                 </div>
 
                 <div className="mt-4 space-y-6">
-                  <p className="text-base text-gray-500">{parkingSpot.description}</p>
+                  <p className="text-base text-gray-500">{parkingSpot.address}</p>
                 </div>
-
-                <div className="mt-6 flex items-center">
-                  <CheckIcon className="h-5 w-5 flex-shrink-0 text-green-500" aria-hidden="true" />
-                  <p className="ml-2 text-sm text-gray-500">In stock and ready to ship</p>
+                <div className="mt-4 space-y-6">
+                  <p className="text-base text-gray-500">{parkingSpot.description}</p>
                 </div>
               </section>
             </div>
@@ -510,7 +508,7 @@ export default function SpotDetail() {
                       type="submit"
                       className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                     >
-                      Reach out
+                      Book now
                     </button>
                   </div>
                   <div className="mt-6 text-center">
@@ -519,7 +517,7 @@ export default function SpotDetail() {
                         className="mr-2 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                         aria-hidden="true"
                       />
-                      <span className="text-gray-500 hover:text-gray-700">What about costs?</span>
+                      <span className="text-gray-500 hover:text-gray-700">Frequenty asked questions?</span>
                     </a>
                   </div>
                 </form>
@@ -529,48 +527,6 @@ export default function SpotDetail() {
         </div>
 
         <div className="mx-auto max-w-2xl px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
-          {/* Details section */}
-          <section aria-labelledby="details-heading">
-            <div className="flex flex-col items-center text-center">
-              <h2 id="details-heading" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                The Fine Details
-              </h2>
-              <p className="mt-3 max-w-3xl text-lg text-gray-600">
-                Our patented padded snack sleeve construction protects your favorite treats from getting smooshed during
-                all-day adventures, long shifts at work, and tough travel schedules.
-              </p>
-            </div>
-
-            <div className="mt-16 grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-8">
-              <div>
-                <div className="aspect-h-2 aspect-w-3 w-full overflow-hidden rounded-lg">
-                  <img
-                    src="https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg"
-                    alt="Drawstring top with elastic loop closure and textured interior padding."
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-                <p className="mt-8 text-base text-gray-500">
-                  The 20L model has enough space for 370 candy bars, 6 cylinders of chips, 1,220 standard gumballs, or
-                  any combination of on-the-go treats that your heart desires. Yes, we did the math.
-                </p>
-              </div>
-              <div>
-                <div className="aspect-h-2 aspect-w-3 w-full overflow-hidden rounded-lg">
-                  <img
-                    src="https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-02.jpg"
-                    alt="Front zipper pouch with included key ring."
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-                <p className="mt-8 text-base text-gray-500">
-                  Up your snack organization game with multiple compartment options. The quick-access stash pouch is
-                  ready for even the most unexpected snack attacks and sharing needs.
-                </p>
-              </div>
-            </div>
-          </section>
-
           {/* Policies section */}
           <section aria-labelledby="policy-heading" className="mt-16 lg:mt-24">
             <h2 id="policy-heading" className="sr-only">
