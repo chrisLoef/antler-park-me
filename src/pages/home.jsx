@@ -702,7 +702,7 @@ export default function Home() {
             <div className='pb-20 pt-16'>
               <div className='md:flex md:justify-center'>
                 <img
-                  src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
+                  src='/logo.png'
                   alt=''
                   className='h-8 w-auto'
                 />

@@ -13,12 +13,11 @@
   }
   ```
 */
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Disclosure, Popover, Tab, Transition } from '@headlessui/react';
 import { Bars3Icon, MagnifyingGlassIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { parkingSpots } from './parking-spots';
-import { useParams } from 'react-router-dom';
 
 const navigation = {
   categories: [
@@ -62,13 +61,13 @@ const filters = [
     ],
   },
   {
-    id: 'sizes',
-    name: 'Sizes',
+    id: 'size',
+    name: 'Size',
     options: [
-      { value: 'xs', label: 'Bike' },
-      { value: 's', label: 'Cargo Bike' },
-      { value: 'm', label: 'Car' },
-      { value: 'l', label: 'Truck' },
+      { value: 'bike', label: 'Bike' },
+      { value: 'cargo-bike', label: 'Cargo Bike' },
+      { value: 'car', label: 'Car' },
+      { value: 'caravan', label: 'Caravan' },
     ],
   },
 ];
@@ -98,6 +97,28 @@ function classNames(...classes) {
 export default function SpotList() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [filterSettings, setFilterSettings] = useState({});
+  const [filteredParkingSpots, setFilteredParkingSpots] = useState(parkingSpots)
+  function applyFilter(sectionId, option) {
+    const newFilterSettings = { ...filterSettings };
+    if (newFilterSettings[sectionId] == null) newFilterSettings[sectionId] = []
+    const optionIndex = newFilterSettings[sectionId].indexOf(option)
+    if (optionIndex === -1) newFilterSettings[sectionId].push(option)
+    if (optionIndex !== -1) newFilterSettings[sectionId].splice(optionIndex, 1) 
+    setFilterSettings(newFilterSettings);
+  }
+  useEffect(() => {
+    console.log(filterSettings)
+    let newParkingSpots = [...parkingSpots]
+    if (filterSettings.location != null && filterSettings.location.length > 0) {
+      newParkingSpots = newParkingSpots.filter(parkingSpot => filterSettings.location.includes(parkingSpot.location))
+    }
+    if (filterSettings.size != null && filterSettings.size.length > 0) {
+      newParkingSpots = newParkingSpots.filter(parkingSpot => filterSettings.size.includes(parkingSpot.size))
+    }
+    setFilteredParkingSpots(newParkingSpots)
+    
+  }, [filterSettings])
 
   return (
     <div className='bg-white'>
@@ -540,8 +561,32 @@ export default function SpotList() {
             <p className='mt-4 text-base text-gray-500'>
               Checkout the spots nearby and filter by your preferences.
             </p>
+            {/* Search Bar */}
+            <div className='grid grid-cols-2 mt-4'>
+              <div className='grid-cols-8'>
+                <div className='relative rounded-md shadow-sm'>
+                  <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
+                    <MagnifyingGlassIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                  </div>
+                  <input
+                    type='email'
+                    name='email'
+                    id='email'
+                    className='block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                    placeholder='Location'
+                  />
+                </div>
+              </div>
+              <div className='grid-cols-4 ml-4'>
+                <a
+                  href='/spots'
+                  className='inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-1.5 font-medium text-white hover:bg-indigo-700'
+                >
+                  Search
+                </a>
+              </div>
+            </div>
           </div>
-
           <div className='pb-24 pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4'>
             <aside>
               <h2 className='sr-only'>Filters</h2>
@@ -571,6 +616,7 @@ export default function SpotList() {
                                 name={`${section.id}[]`}
                                 defaultValue={option.value}
                                 type='checkbox'
+                                onClick={() => applyFilter(section.id, option.value)}
                                 className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                               />
                               <label
@@ -598,7 +644,7 @@ export default function SpotList() {
               </h2>
 
               <div className='grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3'>
-                {parkingSpots.map((product) => (
+                {filteredParkingSpots.map((product) => (
                   <div
                     key={product.id}
                     className='group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white'
@@ -638,7 +684,7 @@ export default function SpotList() {
               <div className='pb-20 pt-16'>
                 <div className='md:flex md:justify-center'>
                   <img
-                    src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
+                    src='/logo.png'
                     alt=''
                     className='h-8 w-auto'
                   />
